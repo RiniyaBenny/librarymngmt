@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <!-- override the automatically generated list view for books -->
+        <record model="ir.ui.view" id="book_tree_view">
+            <field name="name">book.tree</field>
+            <field name="model">librarymngmt.book</field>
+            <field name="arch" type="xml">
+                <tree string="Book Tree">
+                    <field name="isbn"/>
+                    <field name="name"/>
+                    <field name="author_ids" widget="many2many_tags"/>
+                    <field name="editor"/>
+                    <field name="yr_of_edition"/>
+                    <field name="publisher"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+        <!-- window action -->
+        <!--
+            The following tag is an action definition for a "window action",
+            that is an action opening a view or a set of views
+        -->
+        <record model="ir.actions.act_window" id="book_list_action">
+            <field name="name">Books</field>
+            <field name="res_model">librarymngmt.book</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create the first book
+                </p>
+            </field>
+        </record>
+
+        <!-- top level menu: no parent -->
+        <menuitem id="main_librarymngmt_menu" name="Library Management"/>
+        <!-- A first level in the left side menu is needed
+             before using action= attribute -->
+        <menuitem id="librarymngmt_menu" name="Library Management"
+                  parent="main_librarymngmt_menu"/>
+        <menuitem id="books_menu" name="Books" parent="librarymngmt_menu"
+                  action="book_list_action"/>
+        <!-- Full id location:
+             action="librarymngmt.book_list_action"
+             It is not required when it is the same module -->
+
+        <!-- Form view for book-->
+         <record model="ir.ui.view" id="book_form_view">
+                <field name="name">book.form</field>
+                <field name="model">librarymngmt.book</field>
+                <field name="arch" type="xml">
+                    <form string="Book Form">
+                        <sheet>
+                            <group>
+                                <field name="isbn"/>
+                                <field name="name"/>
+                                <field name="author_ids" widget="many2many_tags"/>
+                                <field name="editor"/>
+                                <field name="yr_of_edition"/>
+                                <field name="publisher"/>
+                                <field name="description"/>
+                            </group>
+                            <!--<notebook>
+                                <page string="Description">
+                                    <field name="description"/>
+                                </page>
+                            </notebook>-->
+                        </sheet>
+                    </form>
+                </field>
+        </record>
+
+            <!-- search view for book-->
+                <record model="ir.ui.view" id="book_search_view">
+                    <field name="name">book.search</field>
+                    <field name="model">librarymngmt.book</field>
+                    <field name="arch" type="xml">
+                        <search>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="isbn"/>
+                            <field name="author_ids"/>
+                        </search>
+                    </field>
+                </record>
+
+     <!-- override the automatically generated list view for customers -->
+        <record model="ir.ui.view" id="customer_tree_view">
+            <field name="name">customer.tree</field>
+            <field name="model">librarymngmt.customer</field>
+            <field name="arch" type="xml">
+                <tree string="Customer Tree" decoration-info="state == 'rented'" decoration-success="state == 'returned'" decoration-danger="state == 'lost'" decoration-primary="state == 'fined'" decoration-muted="state == 'paid'">
+                    <field name="name"/>
+                    <field name="book_names"/>
+                    <field name="rental_date"/>
+                    <field name="return_date"/>
+                    <!--<field name="tot_days"/>-->
+                    <!--<field name="returned_date"/>-->
+                    <!--<field name="rent_fee_for_one_day"/>-->
+                    <field name="tot_fee"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <!-- window action -->
+        <!--
+            The following tag is an action definition for a "window action",
+            that is an action opening a view or a set of views
+        -->
+        <record model="ir.actions.act_window" id="customer_list_action">
+            <field name="name">Customers</field>
+            <field name="res_model">librarymngmt.customer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create the first customer
+                </p>
+            </field>
+        </record>
+
+        <!-- Form view for customer-->
+         <record model="ir.ui.view" id="customer_form_view">
+                <field name="name">customer.form</field>
+                <field name="model">librarymngmt.customer</field>
+                <field name="arch" type="xml">
+                    <form string="Customer Form">
+                        <header>
+                            <button name="status_rented" type="object" string="Rented" class="oe_highlight"/>
+                            <button name="status_returned" type="object" states='rented' string="Returned" class="oe_highlight"/>
+                            <button name="status_lost" type="object" states='rented' string="Lost" class="oe_highlight"/>
+                            <button name="status_fined" type="object" states='rented' string="Fined" class="oe_highlight"/>
+                            <button name="status_paid" type="object" states='fined' string="Paid" class="oe_highlight"/>
+                            <button name="status_paid" type="object" states='returned' string="Paid" class="oe_highlight"/>
+                            <button name="status_paid" type="object" states='lost' string="Paid" class="oe_highlight"/>
+
+                            <field name="state" widget="statusbar"/>
+                        </header>
+                        <sheet>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <notebook>
+                                <page string="Rented Books">
+                                    <field name="book_names"/>
+                    		     <!--<field name="tot_days"/>-->
+                                </page>
+                            </notebook>
+                            <group>
+                                <field name="rental_date"/>
+                                <field name="return_date"/>
+                                <field name="tot_fee"/>
+                                <!--<field name="tot_days"/>-->
+                                <!--<field name="returned_date"/>-->
+                            </group>  
+                            <group string="Cost Details">
+                                <field name="rent_fee_for_one_day"/>
+                                <field name="lost_book"/>
+                                <field name="delayed_return"/>
+                            </group>
+                    	     	 
+
+                        </sheet>
+                    </form>
+                </field>
+        </record>
+
+            <!-- search view for customer-->
+                <record model="ir.ui.view" id="customer_search_view">
+                    <field name="name">customer.search</field>
+                    <field name="model">librarymngmt.customer</field>
+                    <field name="arch" type="xml">
+                        <search>
+                            <field name="name"/>
+                            <field name="tot_fee"/>
+                        </search>
+                    </field>
+                </record>
+
+        <record model="ir.actions.act_window" id="customer_list_action">
+            <field name="name">Customers</field>
+            <field name="res_model">librarymngmt.customer</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="customer_menu" name="Customers" parent="librarymngmt_menu"
+                  action="customer_list_action"/>
+
+    <!-- Form view for bookcopies-->
+         <record model="ir.ui.view" id="bookcopies_form_view">
+                <field name="name">bookcopies.form</field>
+                <field name="model">librarymngmt.bookcopies</field>
+                <field name="arch" type="xml">
+                    <form string="Book Copies Form">
+                        <sheet>
+                            <div class="oe_title">
+                                <h1>
+                                    <field name="sequence" readonly="1"/>
+                                </h1>
+                            </div>
+                            <group>
+                                <field name="lib_book_id"/>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+        </record>
+
+     <!-- override the automatically generated list view for customers -->
+        <record model="ir.ui.view" id="bookcopies_tree_view">
+            <field name="name">bookcopies.tree</field>
+            <field name="model">librarymngmt.bookcopies</field>
+            <field name="arch" type="xml">
+                <tree string="Book Copies Tree">
+                    <field name="sequence"/>
+                    <field name="lib_book_id"/>
+                </tree>
+            </field>
+        </record>
+
+     <record model="ir.actions.act_window" id="bookcopies_list_action">
+            <field name="name">Book Copies</field>
+            <field name="res_model">librarymngmt.bookcopies</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="bookcopies_menu" name="Book Copies" parent="librarymngmt_menu"
+                  action="bookcopies_list_action"/>
+</odoo>

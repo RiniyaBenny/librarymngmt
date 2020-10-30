@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_librarymngmt_book,librarymngmt.book,model_librarymngmt_book,,1,1,1,1
+access_librarymngmt_customer,librarymngmt.customer,model_librarymngmt_customer,,1,1,1,1
+access_librarymngmt_author,librarymngmt.author,model_librarymngmt_author,,1,1,1,1
+access_librarymngmt_rentbook,librarymngmt.rentbook,model_librarymngmt_rentbook,,1,1,1,1
+access_librarymngmt_bookcopies,librarymngmt.bookcopies,model_librarymngmt_bookcopies,,1,1,1,1
