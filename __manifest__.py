@@ -24,6 +24,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'data/sequence.xml',
         #'data/librarymngmt_data.xml',
         'views/views.xml',
